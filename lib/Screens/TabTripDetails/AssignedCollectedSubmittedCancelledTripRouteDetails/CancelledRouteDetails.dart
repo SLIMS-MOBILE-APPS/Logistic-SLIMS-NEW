@@ -149,7 +149,7 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                             top: 0,
                             right: 0,
                             child: Container(
-                              height: responsive.screenHeight * 0.20,
+                              height: responsive.screenHeight * 0.26,
                               decoration: const BoxDecoration(
                                 color: Color(0xFF0B66C3),
                                 borderRadius: BorderRadius.only(
@@ -196,7 +196,7 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                           ),
                           Positioned(
                             left: 0,
-                            top: responsive.screenHeight * 0.14,
+                            top: responsive.screenHeight * 0.12,
                             right: 0,
                             child: Padding(
                               padding: const EdgeInsets.all(16),
@@ -236,7 +236,7 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                           Positioned(
                             left: 0,
                             top: responsive.screenHeight *
-                                0.27, // 33% of screen height
+                                0.36, // 33% of screen height
                             right: 0,
                             child: SizedBox(
                               height: responsive.screenHeight * 0.72,

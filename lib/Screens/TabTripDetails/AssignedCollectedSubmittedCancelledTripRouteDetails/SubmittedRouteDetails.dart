@@ -162,7 +162,7 @@ class _SubmittedRouteTripDetailsState extends State<SubmittedRouteTripDetails> {
                         right: 0,
                         child: Container(
                           height: responsive.screenHeight *
-                              0.20, // 42% of screen height
+                              0.26, // 42% of screen height
                           decoration: const BoxDecoration(
                             color: Color(0xFF0B66C3),
                             borderRadius: BorderRadius.only(
@@ -210,7 +210,7 @@ class _SubmittedRouteTripDetailsState extends State<SubmittedRouteTripDetails> {
                       Positioned(
                         left: 0,
                         top: responsive.screenHeight *
-                            0.14, // 33% of screen height
+                            0.12, // 33% of screen height
                         right: 0,
                         child: Padding(
                           padding: const EdgeInsets.all(16),

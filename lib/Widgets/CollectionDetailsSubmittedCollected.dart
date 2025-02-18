@@ -8,7 +8,7 @@ import '../Controllers/ImageSubmitByRecieverController.dart';
 import '../Controllers/SubmitCollectedDataControllers.dart';
 import 'ResponsiveBodyFontWidget.dart';
 import '../Screens/TabTripDetails/AssignedCollectedSubmittedCancelledTripRouteDetails/AssignedTripRouteCollection/TripSucress.dart';
-import 'SubmitPopUPWidget.dart';
+import 'YesNoPopUPWidget.dart';
 
 class SampleCollectionScreen extends StatefulWidget {
   final bool isSubmittedPage; // True if coming from Submitted Page
