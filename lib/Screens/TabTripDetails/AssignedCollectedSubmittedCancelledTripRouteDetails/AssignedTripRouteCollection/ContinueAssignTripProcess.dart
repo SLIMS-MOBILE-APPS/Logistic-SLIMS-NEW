@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../../../../Controllers/TripAreasControllers.dart';
+import '../../../../Models/TripAreasModels.dart';
 import '../../../../Widgets/AppBarWidget.dart';
 import '../../../../Widgets/ResponsiveBodyFontWidget.dart';
 import '../../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedSubmittedCancelledContainer.dart';
 import '../../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsHeadingContainer.dart';
+import '../../../../Widgets/SnackBarMSG.dart';
 import 'RechedLocationTrip.dart';
 
 class ContinueAssignedTripProcess extends StatefulWidget {
-  const ContinueAssignedTripProcess({super.key});
+  final String routeMapID;
+  final String tripShiftID;
+  const ContinueAssignedTripProcess(
+      {super.key, required this.routeMapID, required this.tripShiftID});
 
   @override
   State<ContinueAssignedTripProcess> createState() =>
@@ -16,48 +22,54 @@ class ContinueAssignedTripProcess extends StatefulWidget {
 
 class _ContinueAssignedTripProcessState
     extends State<ContinueAssignedTripProcess> {
-  final List<Map<String, dynamic>> TripDetailsAssigned = [
-    {
-      "branchName": 'Sangeeth Nagar Colony',
-      "time": '3:15 pm',
-      "address": 'No.104, “Kothari’s CENTRUM”, Kondapur Village...',
-      "isCompleted": false,
-      "isStarting": true,
-      "submissionCenter": "L.B Nagar Test Facility",
-    },
-    {
-      "branchName": 'Pragathi Nagar',
-      "time": '3:15 pm',
-      "address": '24, Venkataappa Rd, Tasker Town, Vasanth...',
-      "isCompleted": false,
-      "isStarting": false,
-      "submissionCenter": "L.B Nagar Test Facility",
-    },
-    {
-      "branchName": 'Western Hills',
-      "time": '3:15 pm',
-      "address": '348/6, SHOP 4 & 5, 1ST PHASE, 8TH BMAI...',
-      "isCompleted": false,
-      "isStarting": false,
-      "submissionCenter": "L.B Nagar Test Facility",
-    },
-    {
-      "branchName": 'Sangeeth Nagar Colony',
-      "time": '3:15 pm',
-      "address": 'near, Site no 91, 3rd Block, 3rd Main,...',
-      "isCompleted": false,
-      "isStarting": false,
-      "submissionCenter": "L.B Nagar Test Facility",
-    },
-    {
-      "branchName": 'Khiratabad',
-      "time": '3:15 pm',
-      "address": 'D:No 25 & 16, Mahadev, Klavo clinics &...',
-      "isCompleted": false,
-      "isStarting": false,
-      "submissionCenter": "L.B Nagar Test Facility",
-    },
-  ];
+  List<TripAreasModels> tripRouteAreas = [];
+
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeRoteAreasData(); // Call the API when the page is first loaded
+  }
+
+  // @override
+  // void didUpdateWidget(covariant CancelledTripsTabs oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //
+  //   // Trigger API call again if the startDate or endDate has changed
+  //   if (widget.startDate != oldWidget.startDate ||
+  //       widget.endDATE != oldWidget.endDATE) {
+  //     _initializeCancelledTripData();
+  //   }
+  // }
+
+  Future<void> _initializeRoteAreasData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      List<TripAreasModels> tripAreaWise =
+          await TripAreasAPIController.fetchTripAreasDataAPIs(
+        ipRouteMapId: widget.routeMapID,
+        ipRouteShiftId: widget.tripShiftID,
+        context: context,
+      );
+
+      setState(() {
+        tripRouteAreas = tripAreaWise;
+      });
+    } catch (error) {
+      showSnackBarMessage(
+          context,
+          "Failed to fetch Area wise Trip data: $error",
+          const Color(0xFFEB3F3F));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   final Map<String, dynamic> headerDetails = {
     "startTime": "10:00 am",
     "estimatedTime": "2h 48m",
@@ -86,7 +98,7 @@ class _ContinueAssignedTripProcessState
               top: 0,
               right: 0,
               child: HeaderBar(
-                height: responsive.screenHeight * 0.20, // Custom height
+                height: responsive.screenHeight * 0.26, // Custom height
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Row(
@@ -125,7 +137,7 @@ class _ContinueAssignedTripProcessState
             ),
             Positioned(
               left: 0,
-              top: responsive.screenHeight * 0.13, // 33% of screen height
+              top: responsive.screenHeight * 0.14, // 33% of screen height
               right: 0,
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -163,35 +175,39 @@ class _ContinueAssignedTripProcessState
             ),
             Positioned(
               left: 0,
-              top: responsive.screenHeight * 0.35, // 33% of screen height
+              top: responsive.screenHeight * 0.37, // 33% of screen height
               right: 0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1),
-                child: SizedBox(
-                  height: responsive.screenHeight * 0.57,
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: TripDetailsAssigned.length,
-                    itemBuilder: (context, index) {
-                      final trip = TripDetailsAssigned[index];
-                      return TripRouteDetailsAssignedSubmittedCancelledContainer(
-                        branchName: trip["branchName"],
-                        time: trip["time"],
-                        address: trip["address"],
-                        isCompleted: trip["isCompleted"],
-                        isStartingPoint: trip["isStarting"],
-                        submissionCenter: trip['submissionCenter'],
-                        showSubmissionCenter:
-                            index == TripDetailsAssigned.length - 1,
-                        context: context,
-                        truckImage: '',
-                        isLastItem: index == TripDetailsAssigned.length - 1,
-                      );
-                    },
-                  ),
+              child: SizedBox(
+                height: responsive.screenHeight * 0.72,
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: tripRouteAreas.length,
+                  itemBuilder: (context, index) {
+                    final trip = tripRouteAreas[index];
+
+                    String truckImage =
+                        (tripRouteAreas.isNotEmpty && index == 0)
+                            ? "assets/icons/LightBlueTruck.png"
+                            : "assets/icons/GreyTruck.png";
+                    bool isLastItem = (tripRouteAreas.isNotEmpty &&
+                        index == tripRouteAreas.length - 1);
+
+                    return TripRouteDetailsAssignedSubmittedCancelledContainer(
+                      branchName: trip.areaName,
+                      time: "NA",
+                      address: "",
+                      isCompleted: true,
+                      isStartingPoint: index == 0,
+                      submissionCenter: isLastItem ? trip.routeMapAreaName : "",
+                      context: context,
+                      truckImage: truckImage,
+                      isLastItem: isLastItem,
+                    );
+                  },
                 ),
               ),
             ),
+
             // Sticky Button
             Positioned(
                 left: 0,
@@ -233,3 +249,46 @@ class _ContinueAssignedTripProcessState
     ]));
   }
 }
+
+// final List<Map<String, dynamic>> TripDetailsAssigned = [
+//   {
+//     "branchName": 'Sangeeth Nagar Colony',
+//     "time": '3:15 pm',
+//     "address": 'No.104, “Kothari’s CENTRUM”, Kondapur Village...',
+//     "isCompleted": false,
+//     "isStarting": true,
+//     "submissionCenter": "L.B Nagar Test Facility",
+//   },
+//   {
+//     "branchName": 'Pragathi Nagar',
+//     "time": '3:15 pm',
+//     "address": '24, Venkataappa Rd, Tasker Town, Vasanth...',
+//     "isCompleted": false,
+//     "isStarting": false,
+//     "submissionCenter": "L.B Nagar Test Facility",
+//   },
+//   {
+//     "branchName": 'Western Hills',
+//     "time": '3:15 pm',
+//     "address": '348/6, SHOP 4 & 5, 1ST PHASE, 8TH BMAI...',
+//     "isCompleted": false,
+//     "isStarting": false,
+//     "submissionCenter": "L.B Nagar Test Facility",
+//   },
+//   {
+//     "branchName": 'Sangeeth Nagar Colony',
+//     "time": '3:15 pm',
+//     "address": 'near, Site no 91, 3rd Block, 3rd Main,...',
+//     "isCompleted": false,
+//     "isStarting": false,
+//     "submissionCenter": "L.B Nagar Test Facility",
+//   },
+//   {
+//     "branchName": 'Khiratabad',
+//     "time": '3:15 pm',
+//     "address": 'D:No 25 & 16, Mahadev, Klavo clinics &...',
+//     "isCompleted": false,
+//     "isStarting": false,
+//     "submissionCenter": "L.B Nagar Test Facility",
+//   },
+// ];

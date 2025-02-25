@@ -81,7 +81,10 @@ class _TripDetailsWidgetState extends State<TripDetailsWidget> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ContinueAssignedTripProcess()),
+                builder: (context) => ContinueAssignedTripProcess(
+                      routeMapID: "${widget.routeMapID}",
+                      tripShiftID: "${widget.tripShiftID}",
+                    )),
           );
         } else {
           Navigator.push(
@@ -418,7 +421,10 @@ class _TripDetailsWidgetState extends State<TripDetailsWidget> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ContinueAssignedTripProcess()));
+                    builder: (context) => ContinueAssignedTripProcess(
+                          routeMapID: "${widget.routeMapID}",
+                          tripShiftID: "${widget.tripShiftID}",
+                        )));
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF0B66C3),

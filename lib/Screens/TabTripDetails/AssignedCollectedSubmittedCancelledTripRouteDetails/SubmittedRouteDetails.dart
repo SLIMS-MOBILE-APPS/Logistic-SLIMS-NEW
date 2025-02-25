@@ -279,19 +279,15 @@ class _SubmittedRouteTripDetailsState extends State<SubmittedRouteTripDetails> {
                                   time: timeText,
                                   address: "",
                                   isCompleted: true,
-                                  isStartingPoint: index ==
-                                      0, // First item is the starting point
+                                  isStartingPoint: index == 0,
                                   submissionCenter:
                                       index == submittedTripDetails.length - 1
                                           ? widget.submissionCenter
                                           : "",
-                                  showSubmissionCenter:
-                                      false, // Use actual data
                                   context: context,
                                   truckImage: truckImage,
-                                  isLastItem: index ==
-                                      submittedTripDetails.length -
-                                          1, // Pass the selected image dynamically
+                                  isLastItem:
+                                      index == submittedTripDetails.length - 1,
                                 );
                               },
                               // child: ListView.builder(

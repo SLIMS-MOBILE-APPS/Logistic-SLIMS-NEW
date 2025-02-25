@@ -8,7 +8,6 @@ Widget TripRouteDetailsAssignedSubmittedCancelledContainer({
   required bool isCompleted,
   required bool isStartingPoint,
   required String submissionCenter,
-  required bool showSubmissionCenter,
   required BuildContext context,
   required String truckImage, // New parameter
   required bool isLastItem,

@@ -110,7 +110,8 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtils(context);
     return Scaffold(
-        body: FutureBuilder<List<RouteDetailsCollectedSubmittedCancelledModels>>(
+        body: FutureBuilder<
+                List<RouteDetailsCollectedSubmittedCancelledModels>>(
             future: _futureCancelledTripDetails,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -264,7 +265,6 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                                     submissionCenter: isLastItem
                                         ? widget.submissionCenter
                                         : "",
-                                    showSubmissionCenter: false,
                                     context: context,
                                     truckImage: truckImage,
                                     isLastItem: isLastItem, // Fix here

@@ -7,6 +7,9 @@ class TripAreasModels {
   final double longitude;
   final double latitude;
   final String routeMapAreaName;
+  final int? totalSamples;
+  final String subLocName;
+  final String? trfNo;
 
   TripAreasModels({
     required this.count,
@@ -17,6 +20,9 @@ class TripAreasModels {
     required this.longitude,
     required this.latitude,
     required this.routeMapAreaName,
+    this.totalSamples,
+    required this.subLocName,
+    this.trfNo,
   });
 
   factory TripAreasModels.fromJson(Map<String, dynamic> json) {
@@ -29,6 +35,9 @@ class TripAreasModels {
       longitude: (json['LONGITUDE'] ?? 0).toDouble(),
       latitude: (json['LATITUDE'] ?? 0).toDouble(),
       routeMapAreaName: json['ROUTE_MAP_AREA_NAME'] ?? '',
+      totalSamples: json['TOTAL_SAMPLES'], // Can be null
+      subLocName: json['SUB_LOC_NAME'] ?? '',
+      trfNo: json['TRF_NO'], // Can be null
     );
   }
 }

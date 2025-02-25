@@ -181,7 +181,7 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
                             ),
                             child: HeadingDetailsContainer(
                               headerFlag: "CH",
-                              startTime: widget.startTime.split(" ")[1],
+                              startTime: widget.startTime.split(" ")[2],
                               estimatedTime: widget.estimateTime,
                               timeTaken: widget.timeTaken,
                               samples: widget.samples,
@@ -227,19 +227,15 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
                                   time: timeText,
                                   address: "",
                                   isCompleted: true,
-                                  isStartingPoint: index ==
-                                      0, // First item is the starting point
+                                  isStartingPoint: index == 0,
                                   submissionCenter:
                                       index == collectedTripDetails.length - 1
                                           ? widget.submissionCenter
                                           : "",
-                                  showSubmissionCenter:
-                                      false, // Use actual data
                                   context: context,
                                   truckImage: truckImage,
-                                  isLastItem: index ==
-                                      collectedTripDetails.length -
-                                          1, // Pass the selected image dynamically
+                                  isLastItem:
+                                      index == collectedTripDetails.length - 1,
                                 );
                               },
                             ),
@@ -260,19 +256,23 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SampleCollectionScreen(
+                                      builder: (context) =>
+                                          SampleCollectionScreen(
                                         // isLastRoute: false,
                                         // isSubmitted: false,
                                         isSubmittedPage: false,
-                                        submittedImage: "", // Pass the submittedImage
+                                        submittedImage:
+                                            "", // Pass the submittedImage
                                         capturedImages: [], // Also pass it in the list
                                         samples: "",
                                         containers: "",
                                         trf: "",
                                         remarks: "",
-                                        routeSHIFTID:widget.routeShiftId,
-                                        submissionCenterLocationID: widget.submissionLocationID,
-                                        SubmissionCenter: widget.submissionCenter,
+                                        routeSHIFTID: widget.routeShiftId,
+                                        submissionCenterLocationID:
+                                            widget.submissionLocationID,
+                                        SubmissionCenter:
+                                            widget.submissionCenter,
                                       ),
                                     ),
                                   );
