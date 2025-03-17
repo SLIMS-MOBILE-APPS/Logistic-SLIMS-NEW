@@ -8,8 +8,12 @@ class TripAreasModels {
   final double latitude;
   final String routeMapAreaName;
   final int? totalSamples;
+  final int? containers;
   final String subLocName;
-  final String? trfNo;
+  final int? trfNo;
+  final String? startDt;
+  final String? completedDt;
+  final String? reachedDt;
 
   TripAreasModels({
     required this.count,
@@ -21,8 +25,12 @@ class TripAreasModels {
     required this.latitude,
     required this.routeMapAreaName,
     this.totalSamples,
+    this.containers, // Added missing field
     required this.subLocName,
     this.trfNo,
+    this.startDt,
+    this.completedDt,
+    this.reachedDt,
   });
 
   factory TripAreasModels.fromJson(Map<String, dynamic> json) {
@@ -35,9 +43,13 @@ class TripAreasModels {
       longitude: (json['LONGITUDE'] ?? 0).toDouble(),
       latitude: (json['LATITUDE'] ?? 0).toDouble(),
       routeMapAreaName: json['ROUTE_MAP_AREA_NAME'] ?? '',
-      totalSamples: json['TOTAL_SAMPLES'], // Can be null
+      totalSamples: json['TOTAL_SAMPLES'], // Nullable int
+      containers: json['CONTAINERS'], // Added missing field
       subLocName: json['SUB_LOC_NAME'] ?? '',
-      trfNo: json['TRF_NO'], // Can be null
+      trfNo: json['TRF_NO'], // Nullable int
+      startDt: json['START_DT'], // Nullable string
+      completedDt: json['COMPLETED_DT'], // Nullable string
+      reachedDt: json['REACHED_DT'], // Nullable string
     );
   }
 }

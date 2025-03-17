@@ -533,7 +533,9 @@ class _TripDetailsWidgetState extends State<TripDetailsWidget> {
       ),
       builder: (context) {
         return CollectedRouteSubmitBottomSheet(
-          heading: 'Submit Collected Route Data',
+          heading: action == "AC"
+              ? 'Do you want to accept the Assigned Trip'
+              : 'Do you want to decline the Assigned Trip',
           onYesPressed: () async {
             if (isLoading) return;
             setState(() => isLoading = true);

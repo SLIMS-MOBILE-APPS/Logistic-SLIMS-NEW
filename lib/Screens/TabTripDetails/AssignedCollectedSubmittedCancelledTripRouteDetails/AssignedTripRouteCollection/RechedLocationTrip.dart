@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:logisticslims/Screens/TabTripDetails/AssignedCollectedSubmittedCancelledTripRouteDetails/AssignedTripRouteCollection/ContinueAssignTripProcess.dart';
+import '../../../../Controllers/TripTrackingControllers.dart';
+import '../../../../Widgets/LogisticsBottomNavigation.dart';
 import '../../../../Widgets/ResponsiveBodyFontWidget.dart';
-import '../../../../Widgets/CollectionDetailsSubmittedCollected.dart';
+import '../../../../Widgets/CollectedSampleSubmit.dart';
+import '../../../../Widgets/SnackBarMSG.dart';
+import '../../../../Widgets/YesNoPopUPWidget.dart';
+import 'SampleCollectionAreaWiseSubmit.dart';
 
 class ReachedLocationTripDetails extends StatefulWidget {
-  const ReachedLocationTripDetails({super.key});
+  final String tripShiftId;
+  final String routeMapId;
+  final String areaId;
+  final String areaName;
+  final String duration;
+
+  const ReachedLocationTripDetails({
+    super.key,
+    required this.tripShiftId,
+    required this.routeMapId,
+    required this.areaId,
+    required this.areaName,
+    required this.duration,
+  });
 
   @override
   State<ReachedLocationTripDetails> createState() =>
@@ -12,6 +31,56 @@ class ReachedLocationTripDetails extends StatefulWidget {
 
 class _ReachedLocationTripDetailsState
     extends State<ReachedLocationTripDetails> {
+  bool _isLoading = false;
+
+  void _reachedTrip() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final response = await TripTrackingAPIController.fetchTripTrackingData(
+        ipTripShiftId: widget.tripShiftId,
+        ipRouteMapId: widget.routeMapId,
+        areaId: widget.areaId,
+        flag: 'R',
+        totalSamples: '',
+        totalContainers: '',
+        trfNo: '',
+        remarks: '',
+        latitude: '',
+        longitude: '',
+        context: context,
+      );
+
+      if (response.isNotEmpty) {
+        showSnackBarMessage(
+            context, "The Trip Reached", const Color(0xFF027450));
+
+        // Navigate to the next screen immediately
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SampleCollectionAreaWiseSubmitScreen(
+              routeSHIFTID: widget.tripShiftId,
+              submissionCenter: widget.areaName,
+              areaId: widget.areaId,
+              routeMapId: widget.routeMapId,
+              duration: widget.duration,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      showSnackBarMessage(
+          context, "Error: ${e.toString()}", const Color(0xFFEB3F3F));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtils(context);
@@ -36,9 +105,14 @@ class _ReachedLocationTripDetailsState
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Back Button
                       InkWell(
-                        onTap: () => Navigator.pop(context),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ContinueAssignedTripProcess(
+                                        routeMapID: widget.routeMapId,
+                                        tripShiftID: widget.tripShiftId))),
                         child: Container(
                           width: responsive.screenWidth * 0.08,
                           height: responsive.screenWidth * 0.08,
@@ -67,7 +141,7 @@ class _ReachedLocationTripDetailsState
                             ),
                           ),
                           Text(
-                            "Pragati Nagar",
+                            widget.areaName,
                             style: TextStyle(
                               fontSize: responsive.getTitleFontSize(),
                               color: Colors.white,
@@ -80,29 +154,24 @@ class _ReachedLocationTripDetailsState
                 ),
               ),
 
-              // Content Section
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.asset(
-                        "assets/icons/location.png", // Update with your image path
-                        height: responsive.screenHeight *
-                            0.7, // 30% of screen height
-                        width: double.infinity, // Full width
-                        fit: BoxFit.fill, // Adjust the image scaling
+                        "assets/icons/location.png",
+                        height: responsive.screenHeight * 0.6,
+                        width: double.infinity,
+                        fit: BoxFit.fill,
                       ),
-                      const SizedBox(height: 16), // Optional spacing
-                      // Additional content can go here
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-// Bottom Container
-          // Bottom Positioned Container with Flag
           Positioned(
             bottom: 0,
             left: 0,
@@ -110,7 +179,6 @@ class _ReachedLocationTripDetailsState
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                // Main Container
                 Container(
                   padding: const EdgeInsets.all(16.0),
                   decoration: const BoxDecoration(
@@ -131,15 +199,13 @@ class _ReachedLocationTripDetailsState
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 16), // Space for the flag
-                      // Pragathi Nagar and Time Row
+                      const SizedBox(height: 36),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Pragathi Nagar Text
                           Expanded(
                             child: Text(
-                              "Pragathi Nagar",
+                              widget.areaName,
                               style: TextStyle(
                                 fontSize: responsive.getTitleFontSize(),
                                 fontWeight: FontWeight.bold,
@@ -147,12 +213,11 @@ class _ReachedLocationTripDetailsState
                               ),
                             ),
                           ),
-                          // Time Container
                           Container(
                             width: responsive.screenWidth * 0.09,
-                            height: responsive.screenHeight * 0.04,
+                            height: responsive.screenHeight * 0.05,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 4),
+                                horizontal: 4, vertical: 6),
                             decoration: const ShapeDecoration(
                               color: Color.fromARGB(255, 227, 241, 253),
                               shape: RoundedRectangleBorder(
@@ -163,7 +228,7 @@ class _ReachedLocationTripDetailsState
                               ),
                             ),
                             child: Text(
-                              "25 min",
+                              "${widget.duration} min",
                               style: TextStyle(
                                 color: Color(0xFF073D75),
                                 fontSize: responsive.getBodyFontSize(),
@@ -176,16 +241,16 @@ class _ReachedLocationTripDetailsState
                       ),
                       const SizedBox(height: 8),
                       // Address Text
-                      Text(
-                        "24, Venkatappa Rd, Tasker Town, Vasanth Nagar, Hyderabad, Telangana",
-                        style: TextStyle(
-                          fontSize: responsive.getBodyFontSize(),
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                      // Text(
+                      //   "24, Venkatappa Rd, Tasker Town, Vasanth Nagar, Hyderabad, Telangana",
+                      //   style: TextStyle(
+                      //     fontSize: responsive.getBodyFontSize(),
+                      //     color: Colors.black54,
+                      //     fontWeight: FontWeight.w500,
+                      //   ),
+                      // ),
                       const SizedBox(height: 10),
-                      // Reached Button
+
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -193,24 +258,29 @@ class _ReachedLocationTripDetailsState
                             width: responsive.screenWidth,
                             height: 52,
                             child: ElevatedButton(
-                              onPressed: () {
-                                // Add action here
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) =>
-                                //         SampleCollectionScreen(
-                                //       isLastRoute: true,
-                                //       isSubmitted: false,
-                                //           submittedImage: '',
-                                //       samples: '',
-                                //       containers: '',
-                                //       trf: '',
-                                //       remarks: '', SubmissionCenter: '',
-                                //     ),
-                                //   ),
-                                // );
-                              },
+                              onPressed: _isLoading
+                                  ? null
+                                  : () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16)),
+                                        ),
+                                        builder: (context) {
+                                          return CollectedRouteSubmitBottomSheet(
+                                            heading: 'Reached Area Wise',
+                                            onYesPressed: () {
+                                              _reachedTrip();
+                                            },
+                                            onNoPressed: () {
+                                              print("No button pressed");
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF0B66C3),
                                 padding: const EdgeInsets.symmetric(
@@ -275,6 +345,15 @@ class _ReachedLocationTripDetailsState
               ],
             ),
           ),
+          // Show loading indicator in the center of the screen when _isLoading is true
+          if (_isLoading)
+            const Positioned.fill(
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Color.fromARGB(255, 11, 102, 195),
+                ),
+              ),
+            ),
         ],
       ),
     );

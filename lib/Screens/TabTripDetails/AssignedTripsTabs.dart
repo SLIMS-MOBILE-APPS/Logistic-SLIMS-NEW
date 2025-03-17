@@ -46,7 +46,7 @@ class _AssignedTripsTabsState extends State<AssignedTripsTabs> {
     try {
       List<AssignedTabTripModels> assignedTrips =
           await AssignedTabTripAPIController.fetchAssignedTabTripAPIs(
-              widget.startDate, widget.endDATE, context);
+              widget.startDate, widget.endDATE,"0", context);
 
       setState(() {
         assignedTabTrips = assignedTrips;

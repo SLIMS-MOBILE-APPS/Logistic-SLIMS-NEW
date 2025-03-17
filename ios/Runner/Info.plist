@@ -47,5 +47,24 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+
+    <!-- Internet permission -->
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+
+    <!-- Location permissions -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location to track the trip.</string>
+
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app requires access to your location at all times.</string>
+
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>We use your location to provide better services.</string>
 </dict>
 </plist>

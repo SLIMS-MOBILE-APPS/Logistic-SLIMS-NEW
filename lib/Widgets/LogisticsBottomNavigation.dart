@@ -12,51 +12,62 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   int _selectedIndex = 0;
+  late List<Widget> _pages;
 
-  final List<Widget> _pages = [
-    const LogisticsHome(),
-    const LogisticsProfile(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const LogisticsHome(),
+      const LogisticsProfile(),
+    ];
+  }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (_selectedIndex == index) {
+      // Reload the current page by replacing it with a new instance
+      setState(() {
+        _pages[index] =
+            index == 0 ? const LogisticsHome() : const LogisticsProfile();
+      });
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('Ydya App'),
-        // ),
-        body: _pages[_selectedIndex],
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08), // Adjust shadow color
-                spreadRadius: 2,
-                blurRadius: 8, // Adjust for softer or sharper shadow
-                offset: const Offset(0, -2), // Position shadow above bottom nav
-              ),
-            ],
-          ),
-          child: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: 'Profile'),
-            ],
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-
-            selectedItemColor:
-                Color(0xFF0B66C3), // Change this to your desired color
-            unselectedItemColor:
-                Colors.grey, // Optional: color for unselected items
-          ),
-        ));
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          body: _pages[_selectedIndex],
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08), // Adjust shadow color
+                  spreadRadius: 2,
+                  blurRadius: 8, // Adjust for softer or sharper shadow
+                  offset:
+                      const Offset(0, -2), // Position shadow above bottom nav
+                ),
+              ],
+            ),
+            child: BottomNavigationBar(
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: 'Profile'),
+              ],
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+              selectedItemColor: const Color(0xFF0B66C3),
+              unselectedItemColor: Colors.grey,
+            ),
+          )),
+    );
   }
 }

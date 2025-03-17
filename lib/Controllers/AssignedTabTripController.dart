@@ -9,9 +9,11 @@ import 'package:http/http.dart' as http;
 import '../Models/AssignedTabTripsModels.dart';
 
 class AssignedTabTripAPIController {
-  static Future<List<AssignedTabTripModels>>
-  fetchAssignedTabTripAPIs(String selectedFromDate,
-      String selectedToDate, BuildContext context) async {
+  static Future<List<AssignedTabTripModels>> fetchAssignedTabTripAPIs(
+      String selectedFromDate,
+      String selectedToDate,
+      String SessionID,
+      BuildContext context) async {
 // Wait for loading auth response before proceeding
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
@@ -24,12 +26,12 @@ class AssignedTabTripAPIController {
     if (authResponse == null) {
       throw Exception("Authentication data is not available.");
     }
-    final jobsListAPIUrl = Uri.parse(
-        '${authResponse.apiUrl}/Logistics/Routes');
+    final jobsListAPIUrl = Uri.parse('${authResponse.apiUrl}/Logistics/Routes');
 
     final Map<String, String> data = {
-      "user_id": "${logINResponse?.userId}",//"2386",
-      "session_id": "0",
+      "user_id": "${logINResponse?.userId}", //"2386",
+      "session_id":
+          SessionID, //here im passing the session id and also the TRIP shiftID
       "connection": authResponse.connectionString
     };
 
@@ -44,13 +46,16 @@ class AssignedTabTripAPIController {
         encoding: Encoding.getByName("utf-8"),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
-        List<AssignedTabTripModels> assignedTabTrip =
-        (responseData['Data'] as List)
-            .map((item) => AssignedTabTripModels.fromJson(item))
-            .toList();
-        return assignedTabTrip;
+
+        if (responseData['Data'] is List && responseData['Data'].isNotEmpty) {
+          return (responseData['Data'] as List)
+              .map((item) => AssignedTabTripModels.fromJson(item))
+              .toList();
+        } else {
+          throw Exception('Invalid response format');
+        }
       } else {
         throw Exception('Failed to load Assigned Data');
       }

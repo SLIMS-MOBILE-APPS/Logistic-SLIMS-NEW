@@ -25,9 +25,9 @@ class TripTrackingModels {
     return TripTrackingModels(
       totalSamples: json["TOTAL_SAMPLES"] ?? 0,
       completedDt: json["COMPLETED_DT"],
-      completedBy: json["COMPLETED_BY"],
+      completedBy: json["COMPLETED_BY"]?.toString(), // Convert to String
       reachedDt: json["REACHED_DT"],
-      reachedBy: json["REACHED_BY"],
+      reachedBy: json["REACHED_BY"]?.toString(), // Convert to String
       startBy: json["START_BY"] ?? 0,
       startDt: json["START_DT"] ?? "",
       totalSamples1: json["TOTAL_SAMPLES1"] ?? 0,

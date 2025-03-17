@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../Widgets/AppBarWidget.dart';
 import '../../../../Widgets/ResponsiveBodyFontWidget.dart';
-import '../../../../Widgets/CollectionDetailsSubmittedCollected.dart';
+import '../../../../Widgets/CollectedSampleSubmit.dart';
 
 class UploadTRFPage extends StatefulWidget {
   final bool isSubmittedPage;
@@ -231,7 +231,7 @@ class _UploadTRFPageState extends State<UploadTRFPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SampleCollectionScreen(
+                builder: (context) => CollectedSampleSubmitScreen(
                   //isLastRoute: false,
                   isSubmittedPage: widget.isSubmittedPage,
                   capturedImages: imagePaths,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../Controllers/RouteDetailsCollectedSubmittedCancelledControllers.dart';
 import '../../../Models/RouteDetailsSubmittedCancelledModels.dart';
 import '../../../Widgets/ResponsiveBodyFontWidget.dart';
-import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedSubmittedCancelledContainer.dart';
+import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedCollectedSubmittedCancelledContainer.dart';
 import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsHeadingContainer.dart';
 
 class CancelledRouteTripDetails extends StatefulWidget {
@@ -220,12 +220,12 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                                 ),
                                 child: HeadingDetailsContainer(
                                   headerFlag: "CH",
-                                  startTime: widget.startTime.split("  ")[1],
+                                  startTime: "--",//"widget.startTime.split("  ")[1]",
                                   estimatedTime: widget.estimateTime,
                                   timeTaken: "--",
-                                  samples: "",
-                                  containers: "",
-                                  trf: "",
+                                  samples: "--",
+                                  containers: "--",
+                                  trf: "--",
                                   receiverId: "",
                                   remarks: "",
                                   submittedImage: "",
@@ -256,18 +256,18 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                                           .isNotEmpty &&
                                       index == cancelledTripDetails.length - 1);
 
-                                  return TripRouteDetailsAssignedSubmittedCancelledContainer(
+                                  return TripRouteDetailsAssignedCollectedSubmittedCancelledContainer(
                                     branchName: trip.areaName,
                                     time: "NA",
                                     address: "",
-                                    isCompleted: true,
-                                    isStartingPoint: index == 0,
+                                    // isCompleted: true,
+                                    // isStartingPoint: index == 0,
                                     submissionCenter: isLastItem
                                         ? widget.submissionCenter
                                         : "",
                                     context: context,
                                     truckImage: truckImage,
-                                    isLastItem: isLastItem, // Fix here
+                                    isLastItem: isLastItem, timeColor: null, // Fix here
                                   );
                                 },
                               ),
