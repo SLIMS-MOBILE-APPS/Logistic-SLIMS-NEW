@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:logisticslims/Widgets/ResponsiveBodyFontWidget.dart';
 
-Widget TripRouteDetailsAssignedSubmittedCancelledContainer({
+Widget TripRouteDetailsAssignedCollectedSubmittedCancelledContainer({
   required String branchName,
   required String time,
   required String address,
-  required bool isCompleted,
-  required bool isStartingPoint,
   required String submissionCenter,
-  required bool showSubmissionCenter,
   required BuildContext context,
   required String truckImage, // New parameter
   required bool isLastItem,
+  required Color? timeColor,
 }) {
   final responsive = ResponsiveUtils(context);
   return Padding(
@@ -57,11 +55,11 @@ Widget TripRouteDetailsAssignedSubmittedCancelledContainer({
                           ),
                         ),
                         Spacer(),
-                        Text(
-                          time,
-                          style:
-                              const TextStyle(color: Colors.grey, fontSize: 12),
-                        ),
+                        if (timeColor != null)
+                          Text(
+                            time,
+                            style: TextStyle(color: timeColor, fontSize: 12),
+                          ),
                       ],
                     ),
                   ),

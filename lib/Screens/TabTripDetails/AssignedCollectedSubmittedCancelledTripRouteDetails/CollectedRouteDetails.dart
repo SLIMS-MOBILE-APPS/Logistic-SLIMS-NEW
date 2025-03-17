@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../Controllers/RouteDetailsCollectedSubmittedCancelledControllers.dart';
 import '../../../Models/RouteDetailsSubmittedCancelledModels.dart';
 import '../../../Widgets/ResponsiveBodyFontWidget.dart';
-import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedSubmittedCancelledContainer.dart';
+import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedCollectedSubmittedCancelledContainer.dart';
 import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsHeadingContainer.dart';
-import '../../../Widgets/CollectionDetailsSubmittedCollected.dart';
+import '../../../Widgets/CollectedSampleSubmit.dart';
 
 class CollectedRouteTripDetails extends StatefulWidget {
   final String routeId;
@@ -110,7 +110,7 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
                         right: 0,
                         child: Container(
                           height: responsive.screenHeight *
-                              0.20, // 42% of screen height
+                              0.26, // 42% of screen height
                           decoration: const BoxDecoration(
                             color: Color(0xFF0B66C3),
                             borderRadius: BorderRadius.only(
@@ -181,7 +181,7 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
                             ),
                             child: HeadingDetailsContainer(
                               headerFlag: "CH",
-                              startTime: widget.startTime.split(" ")[1],
+                              startTime: widget.startTime.split(" ")[2],
                               estimatedTime: widget.estimateTime,
                               timeTaken: widget.timeTaken,
                               samples: widget.samples,
@@ -197,8 +197,7 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
                       ),
                       Positioned(
                         left: 0,
-                        top: responsive.screenHeight *
-                            0.37, // 33% of screen height
+                        top: responsive.screenHeight * 0.37,
                         right: 0,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 1),
@@ -212,34 +211,36 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
 
                                 // Condition for setting the image
                                 String truckImage = index == 0
-                                    ? "assets/icons/LightBlueTruck.png" // First item
-                                    : "assets/icons/SubmittedTruck.png"; // Other items
+                                    ? "assets/icons/LightBlueTruck.png"
+                                    : "assets/icons/SubmittedTruck.png";
 
                                 // Condition for setting the time
                                 String timeText = index == 0
-                                    ? (trip.startDt?.split(" ")[1] ??
-                                        "N/A") // First item shows start time
-                                    : (trip.completedDt?.split(" ")[1] ??
-                                        "N/A"); // Others show completed time
+                                    ? (trip.startDt ?? "N/A")
+                                    : (trip.completedDt ??
+                                        "N/A");
 
-                                return TripRouteDetailsAssignedSubmittedCancelledContainer(
+                                Color? timeColor = index == 0
+                                    ? Colors.blue
+                                    : (trip.completedDt != null &&
+                                            trip.completedDt != "")
+                                        ? Colors.green
+                                        : Colors.grey;
+                                return TripRouteDetailsAssignedCollectedSubmittedCancelledContainer(
                                   branchName: trip.areaName,
                                   time: timeText,
                                   address: "",
-                                  isCompleted: true,
-                                  isStartingPoint: index ==
-                                      0, // First item is the starting point
+                                  // isCompleted: true,
+                                  // isStartingPoint: index == 0,
                                   submissionCenter:
                                       index == collectedTripDetails.length - 1
                                           ? widget.submissionCenter
                                           : "",
-                                  showSubmissionCenter:
-                                      false, // Use actual data
                                   context: context,
                                   truckImage: truckImage,
-                                  isLastItem: index ==
-                                      collectedTripDetails.length -
-                                          1, // Pass the selected image dynamically
+                                  isLastItem:
+                                      index == collectedTripDetails.length - 1,
+                                  timeColor: timeColor,
                                 );
                               },
                             ),
@@ -260,19 +261,23 @@ class _CollectedRouteTripDetailsState extends State<CollectedRouteTripDetails> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SampleCollectionScreen(
+                                      builder: (context) =>
+                                          CollectedSampleSubmitScreen(
                                         // isLastRoute: false,
                                         // isSubmitted: false,
                                         isSubmittedPage: false,
-                                        submittedImage: "", // Pass the submittedImage
+                                        submittedImage:
+                                            "", // Pass the submittedImage
                                         capturedImages: [], // Also pass it in the list
                                         samples: "",
                                         containers: "",
                                         trf: "",
                                         remarks: "",
-                                        routeSHIFTID:widget.routeShiftId,
-                                        submissionCenterLocationID: widget.submissionLocationID,
-                                        SubmissionCenter: widget.submissionCenter,
+                                        routeSHIFTID: widget.routeShiftId,
+                                        submissionCenterLocationID:
+                                            widget.submissionLocationID,
+                                        SubmissionCenter:
+                                            widget.submissionCenter,
                                       ),
                                     ),
                                   );

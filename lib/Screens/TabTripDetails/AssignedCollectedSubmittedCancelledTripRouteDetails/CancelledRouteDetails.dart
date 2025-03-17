@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../Controllers/RouteDetailsCollectedSubmittedCancelledControllers.dart';
 import '../../../Models/RouteDetailsSubmittedCancelledModels.dart';
 import '../../../Widgets/ResponsiveBodyFontWidget.dart';
-import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedSubmittedCancelledContainer.dart';
+import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedCollectedSubmittedCancelledContainer.dart';
 import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsHeadingContainer.dart';
 
 class CancelledRouteTripDetails extends StatefulWidget {
@@ -110,7 +110,8 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtils(context);
     return Scaffold(
-        body: FutureBuilder<List<RouteDetailsCollectedSubmittedCancelledModels>>(
+        body: FutureBuilder<
+                List<RouteDetailsCollectedSubmittedCancelledModels>>(
             future: _futureCancelledTripDetails,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -149,7 +150,7 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                             top: 0,
                             right: 0,
                             child: Container(
-                              height: responsive.screenHeight * 0.20,
+                              height: responsive.screenHeight * 0.26,
                               decoration: const BoxDecoration(
                                 color: Color(0xFF0B66C3),
                                 borderRadius: BorderRadius.only(
@@ -196,7 +197,7 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                           ),
                           Positioned(
                             left: 0,
-                            top: responsive.screenHeight * 0.14,
+                            top: responsive.screenHeight * 0.12,
                             right: 0,
                             child: Padding(
                               padding: const EdgeInsets.all(16),
@@ -219,12 +220,12 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                                 ),
                                 child: HeadingDetailsContainer(
                                   headerFlag: "CH",
-                                  startTime: widget.startTime.split("  ")[1],
+                                  startTime: "--",//"widget.startTime.split("  ")[1]",
                                   estimatedTime: widget.estimateTime,
                                   timeTaken: "--",
-                                  samples: "",
-                                  containers: "",
-                                  trf: "",
+                                  samples: "--",
+                                  containers: "--",
+                                  trf: "--",
                                   receiverId: "",
                                   remarks: "",
                                   submittedImage: "",
@@ -236,7 +237,7 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                           Positioned(
                             left: 0,
                             top: responsive.screenHeight *
-                                0.27, // 33% of screen height
+                                0.36, // 33% of screen height
                             right: 0,
                             child: SizedBox(
                               height: responsive.screenHeight * 0.72,
@@ -255,19 +256,18 @@ class _CancelledRouteTripDetailsState extends State<CancelledRouteTripDetails> {
                                           .isNotEmpty &&
                                       index == cancelledTripDetails.length - 1);
 
-                                  return TripRouteDetailsAssignedSubmittedCancelledContainer(
+                                  return TripRouteDetailsAssignedCollectedSubmittedCancelledContainer(
                                     branchName: trip.areaName,
                                     time: "NA",
                                     address: "",
-                                    isCompleted: true,
-                                    isStartingPoint: index == 0,
+                                    // isCompleted: true,
+                                    // isStartingPoint: index == 0,
                                     submissionCenter: isLastItem
                                         ? widget.submissionCenter
                                         : "",
-                                    showSubmissionCenter: false,
                                     context: context,
                                     truckImage: truckImage,
-                                    isLastItem: isLastItem, // Fix here
+                                    isLastItem: isLastItem, timeColor: null, // Fix here
                                   );
                                 },
                               ),

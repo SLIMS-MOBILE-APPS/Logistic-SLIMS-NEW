@@ -29,26 +29,26 @@ class AssignedTabTripModels {
     required this.areaNames,
   });
 
-  // Factory constructor to create an instance from a JSON object
+  // Factory constructor to handle both response formats
   factory AssignedTabTripModels.fromJson(Map<String, dynamic> json) {
     return AssignedTabTripModels(
-      tripShiftId: json['TRIP_SHIFT_ID'] as int,
-      userId: json['user_id'] as int,
-      shiftFrom: json['SHIFT_FROM'] as String,
-      shiftFromDate: json['SHIFT_FROM_DT'] as String,
-      shiftToDate: json['SHIFT_TO_DT'] as String,
-      shiftTo: json['SHIFT_TO'] as String,
-      tripScheduleDate: json['trip_sch_date'] as String,
-      routeMapId: json['ROUTE_MAP_ID'] as int,
-      routeName: json['ROUTE_NAME'] as String,
-      tripRejectDate: json['TRIP_REJECT_DT'] as String?,
-      stepCount: json['STEP_CNT'] as int,
-      isActive: json['IS_ACTIVE'] as String,
-      areaNames: json['AREANAMES'] as String,
+      tripShiftId: json.containsKey('TRIP_SHIFT_ID') ? json['TRIP_SHIFT_ID'] as int : 0,
+      userId: json.containsKey('user_id') ? json['user_id'] as int : 0,
+      shiftFrom: json.containsKey('SHIFT_FROM') ? json['SHIFT_FROM'] as String : "",
+      shiftFromDate: json.containsKey('SHIFT_FROM_DT') ? json['SHIFT_FROM_DT'] as String : "",
+      shiftToDate: json.containsKey('SHIFT_TO_DT') ? json['SHIFT_TO_DT'] as String : "",
+      shiftTo: json.containsKey('SHIFT_TO') ? json['SHIFT_TO'] as String : "",
+      tripScheduleDate: json.containsKey('trip_sch_date') ? json['trip_sch_date'] as String : "",
+      routeMapId: json.containsKey('ROUTE_MAP_ID') ? json['ROUTE_MAP_ID'] as int : 0,
+      routeName: json.containsKey('ROUTE_NAME') ? json['ROUTE_NAME'] as String : "",
+      tripRejectDate: json.containsKey('TRIP_REJECT_DT') ? json['TRIP_REJECT_DT'] as String? : null,
+      stepCount: json.containsKey('STEP_CNT') ? json['STEP_CNT'] as int : 0,
+      isActive: json.containsKey('IS_ACTIVE') ? json['IS_ACTIVE'] as String : "",
+      areaNames: json.containsKey('AREANAMES') ? json['AREANAMES'] as String : "",
     );
   }
 
-  // Method to convert an instance to a JSON object
+  // Convert an instance to a JSON object
   Map<String, dynamic> toJson() {
     return {
       'TRIP_SHIFT_ID': tripShiftId,

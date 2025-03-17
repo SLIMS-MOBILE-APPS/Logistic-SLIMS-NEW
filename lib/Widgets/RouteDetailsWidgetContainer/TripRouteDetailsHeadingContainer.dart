@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:logisticslims/Widgets/ResponsiveBodyFontWidget.dart';
 
-import '../CollectionDetailsSubmittedCollected.dart';
+import '../CollectedSampleSubmit.dart';
 
 class HeadingDetailsContainer extends StatelessWidget {
   final String headerFlag;
@@ -42,7 +42,7 @@ class HeadingDetailsContainer extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SampleCollectionScreen(
+              builder: (context) => CollectedSampleSubmitScreen(
                 // isLastRoute: false,
                 // isSubmitted: true,
                 isSubmittedPage: true,

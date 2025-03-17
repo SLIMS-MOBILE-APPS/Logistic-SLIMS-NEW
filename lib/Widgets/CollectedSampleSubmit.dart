@@ -8,9 +8,9 @@ import '../Controllers/ImageSubmitByRecieverController.dart';
 import '../Controllers/SubmitCollectedDataControllers.dart';
 import 'ResponsiveBodyFontWidget.dart';
 import '../Screens/TabTripDetails/AssignedCollectedSubmittedCancelledTripRouteDetails/AssignedTripRouteCollection/TripSucress.dart';
-import 'SubmitPopUPWidget.dart';
+import 'YesNoPopUPWidget.dart';
 
-class SampleCollectionScreen extends StatefulWidget {
+class CollectedSampleSubmitScreen extends StatefulWidget {
   final bool isSubmittedPage; // True if coming from Submitted Page
   final List<String>? capturedImages;
   final String samples;
@@ -23,7 +23,7 @@ class SampleCollectionScreen extends StatefulWidget {
   final String submissionCenterLocationID;
   final String SubmissionCenter;
 
-  const SampleCollectionScreen({
+  const CollectedSampleSubmitScreen({
     Key? key,
     required this.isSubmittedPage,
     this.capturedImages,
@@ -39,10 +39,12 @@ class SampleCollectionScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SampleCollectionScreen> createState() => _SampleCollectionScreenState();
+  State<CollectedSampleSubmitScreen> createState() =>
+      _CollectedSampleSubmitScreenState();
 }
 
-class _SampleCollectionScreenState extends State<SampleCollectionScreen> {
+class _CollectedSampleSubmitScreenState
+    extends State<CollectedSampleSubmitScreen> {
   late List<String> capturedImages;
   late TextEditingController samplesController;
   late TextEditingController containersController;
@@ -50,26 +52,8 @@ class _SampleCollectionScreenState extends State<SampleCollectionScreen> {
   late TextEditingController receiverController;
   late TextEditingController remarksController;
   bool isImageCaptured = false;
+  bool _isLoading = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   capturedImages = widget.capturedImages ?? [];
-  //
-  //   // Initialize controllers for Collected Page (Editable), else show static data
-  //   samplesController = TextEditingController(
-  //       text: widget.isSubmittedPage ? widget.samples : '');
-  //   containersController = TextEditingController(
-  //       text: widget.isSubmittedPage ? widget.containers : '');
-  //   trfController =
-  //       TextEditingController(text: widget.isSubmittedPage ? widget.trf : '');
-  //   remarksController = TextEditingController(
-  //       text: widget.isSubmittedPage ? widget.remarks : '');
-  //
-  //   if (widget.submittedImage.isNotEmpty && widget.isSubmittedPage) {
-  //     capturedImages.insert(0, widget.submittedImage);
-  //   }
-  // }
   @override
   void initState() {
     super.initState();
@@ -86,6 +70,10 @@ class _SampleCollectionScreenState extends State<SampleCollectionScreen> {
   }
 
   Future<void> submitCollectedData(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final response =
           await SubmitCollectedDataAPIController.fetchSubmitCollectedDataAPIs(
@@ -135,8 +123,7 @@ class _SampleCollectionScreenState extends State<SampleCollectionScreen> {
           "Submission & Image Upload Successful!",
           const Color.fromARGB(255, 0, 167, 133),
         );
-      }
-      else {
+      } else {
         showSnackBarMessage(
             context, "No Data Found in Response!", Color(0xFFEB3F3F));
       }
@@ -144,6 +131,11 @@ class _SampleCollectionScreenState extends State<SampleCollectionScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
       );
+    } finally {
+      // Ensure _isLoading is set to false once operation is complete
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -151,62 +143,76 @@ class _SampleCollectionScreenState extends State<SampleCollectionScreen> {
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtils(context);
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildHeader(responsive),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); // Dismiss keyboard on outside tap
+        },
+        child: Stack(children: [
+          Scaffold(
+            body: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSection(
-                      title: 'Tubes',
-                      controller: samplesController,
-                      isEditable: !widget.isSubmittedPage),
-                  widget.isSubmittedPage
-                      ? _buildSection(
-                          title: 'Containers',
-                          controller: containersController,
-                          isEditable: !widget.isSubmittedPage)
-                      : Container(),
-                  widget.isSubmittedPage
-                      ? _buildSection(
-                          title: 'TRF',
-                          controller: trfController,
-                          isEditable: !widget.isSubmittedPage)
-                      : Container(),
-                  widget.isSubmittedPage
-                      ? Container()
-                      : _buildSection(
-                          title: 'Receiver',
-                          controller: receiverController,
-                          isEditable: !widget.isSubmittedPage),
-                  _buildSection(
-                      title: 'Remarks',
-                      controller: remarksController,
-                      isMultiLine: true,
-                      isEditable: !widget.isSubmittedPage),
+                  _buildHeader(responsive),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSection(
+                            title: 'Tubes',
+                            controller: samplesController,
+                            isEditable: !widget.isSubmittedPage),
+                        widget.isSubmittedPage
+                            ? _buildSection(
+                                title: 'Containers',
+                                controller: containersController,
+                                isEditable: !widget.isSubmittedPage)
+                            : Container(),
+                        widget.isSubmittedPage
+                            ? _buildSection(
+                                title: 'TRF',
+                                controller: trfController,
+                                isEditable: !widget.isSubmittedPage)
+                            : Container(),
+                        widget.isSubmittedPage
+                            ? Container()
+                            : _buildSection(
+                                title: 'Receiver',
+                                controller: receiverController,
+                                isEditable: !widget.isSubmittedPage),
+                        _buildSection(
+                            title: 'Remarks',
+                            controller: remarksController,
+                            isMultiLine: true,
+                            isEditable: !widget.isSubmittedPage),
 
-                  // Show image only in the Submitted Page
-                  //if (widget.isSubmittedPage && capturedImages.isNotEmpty)
-                  _buildImageSection(responsive),
+                        // Show image only in the Submitted Page
+                        //if (widget.isSubmittedPage && capturedImages.isNotEmpty)
+                        _buildImageSection(responsive),
 
-                  // Capture Image button for Collected Page only
-                  if (!widget.isSubmittedPage)
-                    _buildCaptureImageButton(responsive),
+                        // Capture Image button for Collected Page only
+                        if (!widget.isSubmittedPage)
+                          _buildCaptureImageButton(responsive),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
 
-      // No bottom button for Submitted Page
-      bottomNavigationBar:
-          widget.isSubmittedPage ? null : _buildBottomButton(responsive),
-    );
+            // No bottom button for Submitted Page
+            bottomNavigationBar:
+                widget.isSubmittedPage ? null : _buildBottomButton(responsive),
+          ),
+          if (_isLoading)
+            const Positioned.fill(
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Color.fromARGB(255, 11, 102, 195),
+                ),
+              ),
+            ),
+        ]));
   }
 
   Widget _buildHeader(ResponsiveUtils responsive) {

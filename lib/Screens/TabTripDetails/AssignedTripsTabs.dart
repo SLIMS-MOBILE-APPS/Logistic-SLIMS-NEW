@@ -46,7 +46,7 @@ class _AssignedTripsTabsState extends State<AssignedTripsTabs> {
     try {
       List<AssignedTabTripModels> assignedTrips =
           await AssignedTabTripAPIController.fetchAssignedTabTripAPIs(
-              widget.startDate, widget.endDATE, context);
+              widget.startDate, widget.endDATE,"0", context);
 
       setState(() {
         assignedTabTrips = assignedTrips;
@@ -75,7 +75,9 @@ class _AssignedTripsTabsState extends State<AssignedTripsTabs> {
                   itemBuilder: (context, index) {
                     final trip = assignedTabTrips[index];
                     return TripDetailsWidget(
-                      startTime: trip.shiftFrom ?? "N/A",
+                      startTime:
+                          "${trip.shiftFromDate + " | " + trip.shiftFrom}" ??
+                              "N/A",
                       estimatedTime:
                           calculateDuration(trip.shiftFrom, trip.shiftTo),
                       timeTakenDuration: '',

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../Controllers/RouteDetailsCollectedSubmittedCancelledControllers.dart';
 import '../../../Models/RouteDetailsSubmittedCancelledModels.dart';
 import '../../../Widgets/ResponsiveBodyFontWidget.dart';
-import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedSubmittedCancelledContainer.dart';
+import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsAssignedCollectedSubmittedCancelledContainer.dart';
 import '../../../Widgets/RouteDetailsWidgetContainer/TripRouteDetailsHeadingContainer.dart';
 
 class SubmittedRouteTripDetails extends StatefulWidget {
@@ -162,7 +162,7 @@ class _SubmittedRouteTripDetailsState extends State<SubmittedRouteTripDetails> {
                         right: 0,
                         child: Container(
                           height: responsive.screenHeight *
-                              0.20, // 42% of screen height
+                              0.26, // 42% of screen height
                           decoration: const BoxDecoration(
                             color: Color(0xFF0B66C3),
                             borderRadius: BorderRadius.only(
@@ -210,7 +210,7 @@ class _SubmittedRouteTripDetailsState extends State<SubmittedRouteTripDetails> {
                       Positioned(
                         left: 0,
                         top: responsive.screenHeight *
-                            0.14, // 33% of screen height
+                            0.12, // 33% of screen height
                         right: 0,
                         child: Padding(
                           padding: const EdgeInsets.all(16),
@@ -264,53 +264,39 @@ class _SubmittedRouteTripDetailsState extends State<SubmittedRouteTripDetails> {
 
                                 // Condition for setting the image
                                 String truckImage = index == 0
-                                    ? "assets/icons/LightBlueTruck.png" // First item
-                                    : "assets/icons/SubmittedTruck.png"; // Other items
+                                    ? "assets/icons/LightBlueTruck.png"
+                                    : "assets/icons/SubmittedTruck.png";
 
                                 // Condition for setting the time
                                 String timeText = index == 0
-                                    ? (trip.startDt?.split(" ")[1] ??
-                                        "N/A") // First item shows start time
-                                    : (trip.completedDt?.split(" ")[1] ??
-                                        "N/A"); // Others show completed time
+                                    ? (trip.startDt ?? "N/A")
+                                    : (trip.completedDt ??
+                                        "N/A");
 
-                                return TripRouteDetailsAssignedSubmittedCancelledContainer(
+                                Color? timeColor = index == 0
+                                    ? Colors.blue
+                                    : (trip.completedDt != null &&
+                                            trip.completedDt != "")
+                                        ? Colors.green
+                                        : Colors.grey;
+
+                                return TripRouteDetailsAssignedCollectedSubmittedCancelledContainer(
                                   branchName: trip.areaName,
                                   time: timeText,
                                   address: "",
-                                  isCompleted: true,
-                                  isStartingPoint: index ==
-                                      0, // First item is the starting point
+                                  // isCompleted: true,
+                                  // isStartingPoint: index == 0,
                                   submissionCenter:
                                       index == submittedTripDetails.length - 1
                                           ? widget.submissionCenter
                                           : "",
-                                  showSubmissionCenter:
-                                      false, // Use actual data
                                   context: context,
                                   truckImage: truckImage,
-                                  isLastItem: index ==
-                                      submittedTripDetails.length -
-                                          1, // Pass the selected image dynamically
+                                  isLastItem:
+                                      index == submittedTripDetails.length - 1,
+                                  timeColor: timeColor,
                                 );
                               },
-                              // child: ListView.builder(
-                              //   shrinkWrap: true,
-                              //   padding: EdgeInsets.zero,
-                              //   itemCount: submittedTripDetails.length,
-                              //   itemBuilder: (context, index) {
-                              //     final trip = submittedTripDetails[index];
-                              //     return TripRouteDetailsAssignedSubmittedCancelledContainer(
-                              //       branchName: trip.areaName ?? "Unknown Area",
-                              //       time: trip.startDate ?? "N/A",
-                              //       address: trip.routeMapAreaName ?? "No address",
-                              //       isCompleted: trip.completedDate != null,
-                              //       isStartingPoint: index == 0,
-                              //       submissionCenter: trip.areaName ?? "Submission Center",
-                              //       showSubmissionCenter: index == submittedTripDetails.length - 1,
-                              //       context: context,
-                              //     );
-                              //   },
                             ),
                           ),
                         ),

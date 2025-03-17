@@ -78,7 +78,9 @@ class _CollectedTripsTabsState extends State<CollectedTripsTabs> {
                   itemBuilder: (context, index) {
                     final trip = collectedTabTrips[index];
                     return TripDetailsWidget(
-                      startTime: trip.startDt ?? "N/A", // Use default if null
+                      startTime:
+                          "${trip.shiftFromDt + " | " + trip.shiftFrom}" ??
+                              "N/A", // Use default if null
                       estimatedTime:
                           calculateDuration(trip.shiftFrom, trip.shiftTo),
                       timeTakenDuration: trip.duration != null
@@ -94,8 +96,8 @@ class _CollectedTripsTabsState extends State<CollectedTripsTabs> {
                       TabFlag: 'C', routeMapID: trip.routeMapId,
                       tripShiftID: trip.tripShiftId,
                       totalSamples: "${trip.total ?? 0}",
-                      containers: "${trip.containers??0}",
-                      TRFS: "${trip.trfNo??0}",
+                      containers: "${trip.containers ?? 0}",
+                      TRFS: "${trip.trfNo ?? 0}",
                       base64Images: '',
                       remarks: '',
                       receiverID: '',
