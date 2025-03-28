@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../AuthProvider.dart';
 import '../Widgets/AppBarWidget.dart';
 import '../main.dart';
+import 'HelpAndSupportScreen.dart';
 
 class LogisticsProfile extends StatefulWidget {
   const LogisticsProfile({super.key});
@@ -109,21 +110,21 @@ class _LogisticsProfileState extends State<LogisticsProfile> {
                             ),
                           ),
                           const SizedBox(height: 40),
-                          buildProfileOption(
-                            title: "Reminders",
-                            subtitle: "Manage reminders and notification",
-                            onTap: () {},
-                          ),
-                          const SizedBox(height: 8),
-                          const Divider(),
+                          // buildProfileOption(
+                          //   title: "Reminders",
+                          //   subtitle: "Manage reminders and notification",
+                          //   onTap: () {},
+                          // ),
+                          // const SizedBox(height: 8),
+                          // const Divider(),
                           buildProfileOption(
                             title: "Help & Support",
                             subtitle: "Reach out to us for ny issues",
                             onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => helpAndSuppport()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => helpAndSuppport()));
                             },
                           ),
                           const SizedBox(height: 30),
