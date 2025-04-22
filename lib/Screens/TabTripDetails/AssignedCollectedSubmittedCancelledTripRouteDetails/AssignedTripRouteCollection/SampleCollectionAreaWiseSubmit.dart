@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logisticslims/Screens/TabTripDetails/AssignedCollectedSubmittedCancelledTripRouteDetails/AssignedTripRouteCollection/ContinueAssignTripProcess.dart';
 import 'package:logisticslims/Screens/TabTripDetails/AssignedCollectedSubmittedCancelledTripRouteDetails/AssignedTripRouteCollection/RechedLocationTrip.dart';
@@ -287,6 +288,9 @@ class _SampleCollectionAreaWiseSubmitScreenState
   }) {
     final responsive = ResponsiveUtils(context);
 
+    // Determine if this field should be numeric-only
+    bool isNumericField = title != 'Remarks';
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Column(
@@ -302,6 +306,12 @@ class _SampleCollectionAreaWiseSubmitScreenState
                   controller: controller,
                   maxLines: isMultiLine ? null : 1,
                   minLines: isMultiLine ? 4 : 1,
+                  keyboardType: isNumericField
+                      ? TextInputType.number
+                      : TextInputType.text,
+                  inputFormatters: isNumericField
+                      ? [FilteringTextInputFormatter.digitsOnly]
+                      : null,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(16),
                     border: OutlineInputBorder(
